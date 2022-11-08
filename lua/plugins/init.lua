@@ -42,6 +42,7 @@ require('packer').startup(function(use)
         tag = 'nightly' -- optional, updated every week. (see issue #1193)
     }
     use 'sbdchd/neoformat'
+    use 'lewis6991/gitsigns.nvim'
 
     -- themes
     use 'folke/tokyonight.nvim'
@@ -64,3 +65,4 @@ require('plugins.lsp')
 require('plugins.lualine')
 require('plugins.tree')
 require('plugins.neoformat')
+require('plugins.gitsigns')
