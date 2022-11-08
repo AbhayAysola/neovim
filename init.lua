@@ -1,8 +1,7 @@
+vim.g.mapleader = ' '
 require('options')
 require('plugins')
-
-vim.g.mapleader = ' '
 require('mappings')
-vim.cmd[[colorscheme poimandres]]
+vim.cmd [[colorscheme nightfly]]
 -- require('onenord').setup()
 -- require('everblush').setup({ nvim_tree = { contrast = false } })

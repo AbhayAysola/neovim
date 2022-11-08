@@ -9,14 +9,9 @@ local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
 
-s(
-  {
-    trig="main",
-    dscr="Expands to public static void main(String[] args)",
-    regTrig=false,
-    snippetType="autosnippet"
-  },
-  {
-    t("public static void main(String[] args)")
-  }
-)
+s({
+    trig = "main",
+    dscr = "Expands to public static void main(String[] args)",
+    regTrig = false,
+    snippetType = "autosnippet"
+}, {t("public static void main(String[] args)")})
