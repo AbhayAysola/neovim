@@ -12,7 +12,9 @@ require("mason-lspconfig").setup_handlers {
         lspconfig[server_name].setup {capabilities = capabilities}
     end,
     ["sumneko_lua"] = function()
+        local capabilities = require("cmp_nvim_lsp").default_capabilities()
         require'lspconfig'.sumneko_lua.setup {
+            capabilities = capabilities,
             settings = {
                 Lua = {
                     runtime = {
@@ -32,11 +34,6 @@ require("mason-lspconfig").setup_handlers {
                 }
             }
         }
-    end,
-    ["clangd"] = function()
-        require'lspconfig'.clangd.setup {
-            cmd = {'clangd', '--enable-config', '--suggest-missing-includes'}
-        }
     end
     -- Dedicated handlers are possible, ex:
     -- ["rust_analyzer"] = function ()
@@ -44,48 +41,31 @@ require("mason-lspconfig").setup_handlers {
     -- end
 }
 
-local has_words_before = function()
-    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0 and
-               vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col,
-                                                                          col)
-                   :match("%s") == nil
-end
-local luasnip = require("luasnip")
 local cmp = require("cmp")
 if cmp == nil then return end
 
-cmp.setup {
-    snippet = {
-        expand = function(args) require'luasnip'.lsp_expand(args.body) end
-    },
-
-    mapping = {
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expand_or_locally_jumpable() then
-                luasnip.expand_or_jump()
-            elseif has_words_before() then
-                cmp.complete()
-            else
-                fallback()
-            end
-        end, {"i", "s"}),
-
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, {"i", "s"})
-    },
-
-    sources = {{name = 'nvim_lsp'}, {name = 'luasnip'}}
+local opts = {
+    border = "rounded",
+    winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None"
 }
 
+cmp.setup({
+    mapping = {
+        ["<Tab>"] = cmp.mapping.select_next_item(),
+        ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+        ["<C-d>"] = cmp.mapping.scroll_docs(9),
+        ["<C-u>"] = cmp.mapping.scroll_docs(-9),
+        ["<C-CR>"] = cmp.mapping.confirm()
+    },
+    preselect = cmp.PreselectMode.None,
+    snippet = {
+        expand = function(args) require("luasnip").lsp_expand(args.body) end
+    },
+    window = {completion = opts, documentation = opts},
+    sources = cmp.config.sources({
+        {name = "nvim_lsp", group_index = 1},
+        {name = "luasnip", group_index = 1}
+    })
+})
+
 require("luasnip.loaders.from_vscode").lazy_load()
--- require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/lua/snippets"})

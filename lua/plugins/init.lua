@@ -55,6 +55,7 @@ require('packer').startup(function(use)
     use 'bluz71/vim-moonfly-colors'
     use 'bluz71/vim-nightfly-guicolors'
     use 'Yazeed1s/oh-lucy.nvim'
+    use 'Yazeed1s/minimal.nvim'
 
     -- Automatically set up your configuration after cloning packer.nvim
     if packer_bootstrap then require('packer').sync() end
