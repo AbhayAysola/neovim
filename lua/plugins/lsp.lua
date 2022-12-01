@@ -51,11 +51,11 @@ local opts = {
 
 cmp.setup({
     mapping = {
-        ["<Tab>"] = cmp.mapping.select_next_item(),
-        ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+        ["<C-j>"] = cmp.mapping.select_next_item(),
+        ["<C-k>"] = cmp.mapping.select_prev_item(),
         ["<C-d>"] = cmp.mapping.scroll_docs(9),
         ["<C-u>"] = cmp.mapping.scroll_docs(-9),
-        ["<C-CR>"] = cmp.mapping.confirm()
+        ["<Tab>"] = cmp.mapping.confirm({ select = true })
     },
     preselect = cmp.PreselectMode.None,
     snippet = {
@@ -69,3 +69,4 @@ cmp.setup({
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
+require'lspconfig'.glslls.setup{}
